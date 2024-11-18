@@ -1,10 +1,34 @@
-import { StyleSheet, Text, View } from 'react-native';
+// Use axios to make a request to the server and get the user data
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+
+import { StyleSheet, Text, View } from "react-native";
+import { AuthContext } from "../store/auth-context";
 
 function WelcomeScreen() {
+  // Make a request to the server to get the user data useEffect
+  const [fetchedMessage, setFetchedMessage] = useState("");
+
+  const authCtx = useContext(AuthContext);
+  const token = authCtx.token;
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://react-native-c-437ad-default-rtdb.firebaseio.com//message.json?auth=" +
+          token
+      )
+      .then((response) => {
+        console.log(response.data);
+      });
+  }, []);
+
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.title}>Welcome!</Text>
       <Text>You authenticated successfully!</Text>
+      // Output axios response data here
+      <Text>{fetchedMessage}</Text>
     </View>
   );
 }
@@ -14,13 +38,13 @@ export default WelcomeScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 32,
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
   },
 });
