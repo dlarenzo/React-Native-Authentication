@@ -19,7 +19,7 @@ function WelcomeScreen() {
           token
       )
       .then((response) => {
-        console.log(response.data);
+        setFetchedMessage(response.data);
       });
   }, []);
 
